@@ -1,0 +1,22 @@
+deleteDependentEntities: true
+createMissingRelatedEntities: true
+enableMergeEntity: true
+resources:
+  - kind: test_monty-example-kind
+    selector:
+      query: 'true'
+    port:
+      entity:
+        mappings:
+          identifier: .id
+          title: (.id + "-" + .sf_eventCategory +"-" + .sf_eventType)
+          blueprint: '"test_montyExampleBlueprint"'
+          properties:
+            id: .id
+            metaProperties: .properties
+            metaData: .metaData
+            eventType: .sf_eventType
+            eventCategory: .sf_eventCategory
+            tsid: .tsId
+            eventCreatedOnMS: .sf_eventCreatedOnMs
+            createdAt: .timestamp

@@ -1,0 +1,28 @@
+description: testMonty integration for Port Ocean
+icon: Cookiecutter  # Should be one of the available icons in Port
+features:
+  - type: exporter
+    section: Under Development  # Should be one of the available sections in Port
+    resources:
+      - kind: test_monty-example-kind
+      # - kind: <ResourceName2>
+configurations:
+  - name: mytest_montyToken
+    # required: true
+    type: string
+    sensitive: true
+  - name: someApplicationUrl
+    type: url
+  - name: awsAccessKeyId
+    required: false
+    type: string
+    sensitive: true
+    description: The AWS User Access Key ID used for authentication. For more information, visit the <a href="https://docs.aws.amazon.com/singlesignon/latest/userguide/howtogetcredentials.html" target="_blank">AWS documentation</a>
+  - name: awsSecretAccessKey
+    required: false
+    type: string
+    sensitive: true
+    description: The AWS User Secret Access Key used for authentication. For more information, see the <a href="https://docs.aws.amazon.com/singlesignon/latest/userguide/howtogetcredentials.html" target="_blank">AWS documentation</a>.
+deploymentMethodRequirements:
+  - type: default
+    configurations: ['awsAccessKeyId', 'awsSecretAccessKey']
