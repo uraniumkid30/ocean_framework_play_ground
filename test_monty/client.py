@@ -85,3 +85,20 @@ class SplunkClient:
             if self.ignore_server_error:
                 return []
             raise e
+    @staticmethod
+    def transform_event(event: Dict[str, Any]) -> Dict[str, Any]:
+        return {
+            "identifier": event["event_id"],
+            "title": event["event_name"],
+            "properties": {
+                "eventName": event["event_name"],
+                "eventCode": event["event_code"],
+                "timestamp": event["_time"],
+                "category": event["category"],
+                "severity": event["severity"].lower(),
+                "splunkLink": f"{os.environ['SPLUNK_URL']}/app/search/search?q=event_id%3D{event['event_id']}"
+            },
+            "relations": {
+                "relatedService": event["service_name"]
+            }
+        }
