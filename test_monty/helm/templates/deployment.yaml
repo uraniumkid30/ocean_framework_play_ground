@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Chart.Name }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Chart.Name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Chart.Name }}
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8000"
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        ports:
+        - containerPort: 8000
+        env:
+        - name: PORT_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              name: port-credentials
+              key: clientId
+        - name: PORT_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: port-credentials
+              key: clientSecret
+        - name: PORT_BASE_URL
+          value: {{ .Values.ocean.portBaseUrl | quote }}
+        - name: SPLUNK_BASE_URL
+          value: {{ .Values.splunk.baseUrl | quote }}
+        - name: SPLUNK_TOKEN
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.splunk.tokenSecretName }}
+              key: {{ .Values.splunk.tokenSecretKey }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}

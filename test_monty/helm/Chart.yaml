@@ -1,0 +1,9 @@
+apiVersion: v2
+name: splunk-port-integration
+description: A Helm chart for Splunk-Port Ocean integration
+version: 0.1.0
+appVersion: "1.0"
+dependencies:
+  - name: ocean-framework
+    version: "1.3.0"
+    repository: https://port-charts.github.io
