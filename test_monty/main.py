@@ -1,6 +1,8 @@
 from typing import Any
 
 from port_ocean.context.ocean import ocean
+from port_ocean.core.ocean_types import ASYNC_GENERATOR_RESYNC_TYPE
+from port_ocean.clients.port.types import UserAgentType
 from client import SplunkClient, ResourceCategory
 
 
@@ -74,11 +76,12 @@ async def on_resources_resync(kind: str):
 
 # Optional
 # Listen to the start event of the integration. Called once when the integration starts.
+
+
 @ocean.on_start()
 async def on_start() -> None:
-    # Something to do when the integration starts
-    # For example create a client to query 3rd party services - GitHub, Jira, etc...
-    print("Starting test_monty integration")
+    print("Starting Splunk integration")
+    ocean.register_user_agent(UserAgentType.INTEGRATION, "splunk")
 
 
 @ocean.router.post("/webhook")
@@ -87,6 +90,6 @@ async def on_application_event_webhook_handler(request) -> None:
     print(f"received webhook event data: {data}")
     splunk_client = init_client()
 
-    if data["action"] == "upsert":
-        application = await splunk_client.get_events({"query": "is:ok"})
-        await ocean.register_raw(ResourceCategory.Event, [application])
+    transformed = splunk_client.transform_event(data["event"])
+    await ocean.register_raw(kind="splunkEvent", items=[transformed])
+    return {"status": "success"}
