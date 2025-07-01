@@ -1,90 +1,7 @@
 [
+    
     {
-  "identifier": "test_montyExampleBlueprint",
-  "title": "testMonty Example",
-  "icon": "Blueprint",
-  "schema": {
-    "properties": {
-      "id": {
-        "title": "Id",
-        "type": "string",
-        "description": "ID of the event, assigned by Splunk Observability Cloud"
-      },
-      "metadata": {
-        "title": "MetaData",
-        "type": "object",
-        "description": "A map of key-value pairs created by Splunk Observability Cloud from event time series metadata for the ETS that the event belongs to. For example, alerts received from AWS contain metadata that describes the AWS instance that sent the alert.",
-        "default": {
-          "ETS_key1": "String",
-          "ETS_key2": false,
-          "ETS_key3": 1001
-        }
-      },
-      "properties": {
-        "title": "Properties",
-        "type": "object",
-        "description": "A map of key-value pairs. The map can contain data sent to Splunk Observability Cloud in a POST v2/event request. It can also contain data added to the event from other sources.",
-        "default": {
-          "is": "ok",
-          "sf_notificationWasSent": true,
-          "was": "anomalous"
-        }
-      },
-      "sf_eventCategory": {
-        "title": "SFEventCategory",
-        "type": "string",
-        "enum": [
-          "USER_DEFINED",
-          "ALERT",
-          "AUDIT",
-          "JOB",
-          "COLLECTD",
-          "SERVICE_DISCOVERY",
-          "EXCEPTION"
-        ],
-        "enumColors": {
-          "USER_DEFINED": "green",
-          "AUDIT": "yellow",
-          "JOB": "purple",
-          "ALERT": "red",
-          "COLLECTD": "blue",
-          "SERVICE_DISCOVERY": "lightGray",
-          "EXCEPTION": "pink"
-        },
-        "description": "A category that describes the event. The values are a set of enumerated types. Splunk Observability Cloud sets some values, while you can set others"
-      },
-      "sf_eventCreatedOnMs": {
-        "title": "SFEventCreatedOnMs",
-        "type": "number",
-        "description": "The date and time when the alert that creates the event was set, in *nix time in milliseconds.",
-        "format": "date-time"
-      },
-      "timestamp": {
-        "title": "Timestamp",
-        "type": "number",
-        "description": "The date and time of the event in *nix time in milliseconds. It's set by system.",
-        "format": "date-time"
-      },
-      "sf_eventType": {
-        "title": "SFEventType",
-        "type": "string",
-        "description": "A name for the event. You can specify this value when you send a custom event to Splunk Observability Cloud. Use it to uniquely identify custom events.For an event time series, this value is the analog of the metric name in a metric time series."
-      },
-      "tsld": {
-        "title": "Tsld",
-        "type": "string",
-        "description": "Splunk Observability Cloud-assigned ID of the event time series (ETS) this event belongs to"
-      }
-    },
-    "required": []
-  },
-  "mirrorProperties": {},
-  "calculationProperties": {},
-  "aggregationProperties": {},
-  "relations": {}
-},
-    {
-    "identifier": "splunkEvents",
+    "identifier": "splunkEventsBlueprint",
     "title": "Splunk Event",
     "icon": "Blueprint",
     "schema": {
@@ -142,69 +59,39 @@
           "type": "string",
           "description": "Splunk Observability Cloud-assigned ID of the event time series (ETS) this event belongs to"
         },
-        "url": {
-          "title": "Issue URL",
-          "type": "string",
-          "format": "url",
-          "description": "URL to the issue in Jira"
-        },
-        "status": {
-          "title": "Status",
-          "type": "string",
-          "description": "The status of the issue"
-        },
-        "issueType": {
-          "title": "Type",
-          "type": "string",
-          "description": "The type of the issue"
-        },
-        "components": {
-          "title": "Components",
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "The components related to this issue"
-        },
-        "creator": {
-          "title": "Creator",
-          "type": "string",
-          "description": "The user that created the issue"
-        },
-        "priority": {
-          "title": "Priority",
-          "type": "string",
-          "description": "The priority of the issue"
-        },
-        "labels": {
-          "items": {
-            "type": "string"
-          },
-          "title": "Labels",
-          "type": "array"
-        },
-        "created": {
-          "title": "Created At",
-          "type": "string",
-          "description": "The created datetime of the issue",
-          "format": "date-time"
-        },
-        "updated": {
-          "title": "Updated At",
-          "type": "string",
-          "description": "The updated datetime of the issue",
-          "format": "date-time"
-        },
-        "resolutionDate": {
-          "title": "Resolved At",
-          "type": "string",
-          "description": "The datetime the issue changed to a resolved state",
-          "format": "date-time"
-        }
+        ,
+    "required": []
       }
     },
+        "mirrorProperties": {},
+  "aggregationProperties": {},
     "calculationProperties": {
-    }
+    },
+        "relations": {
+          "relatedService": {
+            "title": "Related Service",
+            "target": "splunkService",
+            "many": false
+          }
+        }
     
-  }
+  },
+    ,
+    {
+      "identifier": "splunkService",
+      "title": "Splunk Service",
+      "icon": "Service",
+      "schema": {
+        "properties": {
+          "serviceName": {
+            "type": "string",
+            "title": "Service Name"
+          },
+          "owner": {
+            "type": "string",
+            "title": "Owner"
+          }
+        }
+      }
+    }
 ]
